@@ -28,10 +28,18 @@ runs:
       with:
         path: ~/.local/share/virtualenvs
         key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
-    - id: debug-print
-      name: Debug Print
-      run: echo ${{ inputs.python-version }}
-      shell: bash
+        
+    - name: Check file existence
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "Pipfile.lock"
+          
+    - name: Pipfile.lock NOT exist
+        if: steps.check_files.outputs.files_exists == 'false'
+        # Only runs if all of the files exists
+        run: pipenv install
+        shell: bash
       
     - id: sync-pipfile
       name: Sync Pipfile
