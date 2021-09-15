@@ -24,6 +24,6 @@ runs:
           
     - id: pipenv-install
       name: Pipenv Install
-      run: pipenv install
+      run: pipenv update
       shell: bash
     
