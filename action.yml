@@ -28,7 +28,11 @@ runs:
       with:
         path: ~/.local/share/virtualenvs
         key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
-
+    - id: debug-print
+      name: Debug Print
+      run: echo ${{ inputs.python-version }}
+      shell: bash
+      
     - id: sync-pipfile
       name: Sync Pipfile
       run: pipenv sync --dev --python ${{ inputs.python-version }}
