@@ -21,29 +21,9 @@ runs:
         python -m pip install --upgrade --no-cache-dir pip
         python -m pip install --no-cache-dir pipenv
       shell: bash
-
-    - id: cache-pipfile
-      name: Cache Pipfile
-      uses: actions/cache@v2
-      with:
-        path: ~/.local/share/virtualenvs
-        key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
-        
-    - name: Check file existence
-        id: check_files
-        uses: andstor/file-existence-action@v1
-        with:
-          files: "Pipfile.lock"
           
-    - name: Pipfile.lock NOT exist
-        if: steps.check_files.outputs.files_exists == 'false'
-        # Only runs if all of the files exists
-        run: pipenv install
-        shell: bash
-      
-    - id: sync-pipfile
-      name: Sync Pipfile
-      run: |
-        echo Using Python Version ${{ inputs.python-version }}
-        pipenv sync --dev --python ${{ inputs.python-version }}
+    - id: pipenv-install
+      name: Pipenv Install
+      run: pipenv install
       shell: bash
+    
